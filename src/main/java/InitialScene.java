@@ -15,15 +15,10 @@ public class InitialScene extends Scene {
         super(root, MusicPlayerMain.WINDOW_WIDTH, MusicPlayerMain.WINDOW_HEIGHT);
 
         Button openFilesButton = new Button("Open file(-s)");
-        openFilesButton.setId("openFilesButton");
-
         Button openFolderButton = new Button("Open folder");
-        openFilesButton.setId("openFolderButton");
 
-        Controller controller = new Controller(stage, new UIContext());
-
-        openFilesButton.setOnAction(controller::onOpenFiles);
-        openFolderButton.setOnAction(controller::onOpenFolder);
+        openFilesButton.setOnAction(Controller::onOpenFiles);
+        openFolderButton.setOnAction(Controller::onOpenFolder);
 
         HBox buttonsBox = new HBox(openFilesButton, new Label("or"), openFolderButton);
         buttonsBox.setAlignment(Pos.CENTER);
@@ -41,10 +36,6 @@ public class InitialScene extends Scene {
         borderPane.setPrefSize(getWidth(), getHeight());
 
         root.getChildren().addAll(borderPane);
-    }
-
-    void setup() {
-
     }
 
     static void show(Stage stage) {
