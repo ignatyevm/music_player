@@ -1,4 +1,3 @@
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -31,23 +30,21 @@ public class Player {
         if (mediaPlayer != null) {
             mediaPlayer.dispose();
         }
+        Logger.logPlayTrack(currentTrackIndex, trackIndex,
+                tracks.get(currentTrackIndex), tracks.get(trackIndex));
         currentTrackIndex = trackIndex;
         Media media = tracks.get(trackIndex).media;
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnReady(() -> {
             play();
             mediaPlayer.setOnEndOfMedia(() -> {
-               mainScene.controller.onSelectNext(null);
+                if (isLast()) {
+                    mainScene.controller.selectFirst();
+                } else {
+                    mainScene.controller.selectNext(null);
+                }
             });
         });
-    }
-
-    public void playNext() {
-        play((currentTrackIndex + 1) % tracks.size());
-    }
-
-    public void playPrev() {
-        play((currentTrackIndex - 1 + tracks.size()) % tracks.size());
     }
 
     public boolean isFirst() {
