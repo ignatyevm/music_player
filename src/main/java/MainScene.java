@@ -1,3 +1,4 @@
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,13 +23,17 @@ public class MainScene extends Scene {
     public Button pauseButton;
     public Button nextButton;
     public Label timeLabel;
+    public Label volumeLabel;
     public Slider trackSlider;
     public Slider volumeSlider;
+    public InvalidationListener trackSliderChangeListener;
 
     public MainScene(Group root, List<File> files) {
         super(root, MusicPlayerMain.WINDOW_WIDTH, MusicPlayerMain.WINDOW_HEIGHT);
 
         controller = new MainSceneController(this);
+
+        trackSliderChangeListener = obs -> player.seek((long) (player.getTotalDuration().toMillis() * trackSlider.getValue() / 100.0));
 
         ObservableList<Track> tracks = files.stream().map(Track::new)
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -45,11 +50,14 @@ public class MainScene extends Scene {
         pauseButton.setOnAction(controller::onPause);
         nextButton.setOnAction(controller::selectNext);
 
-        HBox buttonsBar = new HBox(prevButton, pauseButton, nextButton);
+        volumeSlider = setupVolumeSlider();
+        volumeLabel = new Label("50%");
+
+        HBox buttonsBar = new HBox(prevButton, pauseButton, nextButton, volumeSlider, volumeLabel);
         buttonsBar.setAlignment(Pos.CENTER);
         buttonsBar.setSpacing(10);
 
-        trackSlider = setupSlider();
+        trackSlider = setupTrackSlider();
 
         timeLabel = new Label("00.00");
 
@@ -71,7 +79,7 @@ public class MainScene extends Scene {
         trackTable.getSelectionModel().select(0);
     }
 
-    private Slider setupSlider() {
+    private Slider setupTrackSlider() {
         Slider trackSlider = new Slider();
         trackSlider.setPrefWidth(400);
         trackSlider.setMaxWidth(400);
@@ -79,6 +87,21 @@ public class MainScene extends Scene {
         trackSlider.setMin(0.0);
         trackSlider.setMax(100.0);
         return trackSlider;
+    }
+
+    private Slider setupVolumeSlider() {
+        Slider volumeSlider = new Slider();
+        volumeSlider.setPrefWidth(100);
+        volumeSlider.setMaxWidth(100);
+        volumeSlider.setMinWidth(100);
+        volumeSlider.setMin(0.0);
+        volumeSlider.setMax(1.0);
+        volumeSlider.setValue(0.5);
+        volumeSlider.valueProperty().addListener(obs -> {
+            player.setVolume(volumeSlider.getValue());
+            volumeLabel.setText(String.format("%d%%", (int) (100 * volumeSlider.getValue())));
+        });
+        return volumeSlider;
     }
 
     private TableView<Track> setupTable(ObservableList<Track> tracks) {
