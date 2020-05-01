@@ -124,8 +124,8 @@ public class MainScene extends Scene {
 
         TableColumn<Track, String> durationColumn = new TableColumn<>("Duration");
         durationColumn.setCellValueFactory(cellData -> {
-            int trackDuration = (int) cellData.getValue().media.getDuration().toSeconds();
-            return new ReadOnlyStringWrapper(String.format("%d.%02d",trackDuration / 60, trackDuration % 60));
+            int trackDuration = (int) cellData.getValue().duration.toSeconds();
+            return new ReadOnlyStringWrapper(String.format("%d:%02d",trackDuration / 60, trackDuration % 60));
         });
         durationColumn.setMinWidth(75);
         durationColumn.setMaxWidth(100);
