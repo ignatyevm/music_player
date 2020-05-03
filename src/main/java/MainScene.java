@@ -197,7 +197,9 @@ public class MainScene extends Scene {
 
         TableColumn<Track, String> nameColumn = new TableColumn<>("Track");
         nameColumn.setCellValueFactory(cellData ->
-                new ReadOnlyStringWrapper(cellData.getValue().source.getName()));
+                new ReadOnlyStringWrapper(
+                        cellData.getValue().source.getName()
+                                .substring(0, cellData.getValue().source.getName().length() - 4)));
 
         TableColumn<Track, String> durationColumn = new TableColumn<>("Duration");
         durationColumn.setCellValueFactory(cellData -> {
