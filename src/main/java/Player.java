@@ -52,26 +52,24 @@ public class Player {
             mainScene.trackSlider.valueProperty().removeListener(mainScene.trackSliderChangeListener);
             mediaPlayer.dispose();
         }
-        Logger.logPlayTrack(currentTrackIndex, trackIndex,
-                tracks.get(currentTrackIndex), tracks.get(trackIndex));
+        Logger.logPlayTrack(currentTrackIndex, trackIndex, tracks.get(currentTrackIndex), tracks.get(trackIndex));
         currentTrackIndex = trackIndex;
         Media media = tracks.get(trackIndex).media;
         mediaPlayer = new MediaPlayer(media);
 
         mainScene.trackSlider.valueProperty().addListener(mainScene.trackSliderChangeListener);
 
-        mediaPlayer.currentTimeProperty().addListener(l-> {
-            mainScene.trackSlider.valueProperty().removeListener(mainScene.trackSliderChangeListener);
-
+        mediaPlayer.currentTimeProperty().addListener(obs -> {
             int currentTime = (int) getCurrentTime().toMillis();
             int totalTime = (int) getTotalDuration().toMillis();
-            mainScene.trackSlider.setValue(currentTime * 100.0 / totalTime);
-
+            if (!mainScene.trackSliderDragged) {
+                mainScene.trackSlider.valueProperty().removeListener(mainScene.trackSliderChangeListener);
+                mainScene.trackSlider.setValue(currentTime * 100.0 / totalTime);
+                mainScene.trackSlider.valueProperty().addListener(mainScene.trackSliderChangeListener);
+            }
             int mins = (int) (getCurrentTime().toSeconds() / 60);
             int secs = (int) (getCurrentTime().toSeconds() % 60);
             mainScene.timeLabel.setText(String.format("%d:%02d", mins, secs));
-
-            mainScene.trackSlider.valueProperty().addListener(mainScene.trackSliderChangeListener);
         });
         mediaPlayer.setOnReady(() -> {
             play();
