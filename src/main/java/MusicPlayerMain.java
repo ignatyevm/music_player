@@ -19,6 +19,7 @@ public class MusicPlayerMain extends Application {
         MusicPlayerMain.stage = stage;
         stage.setTitle("Music Player");
         stage.centerOnScreen();
+        stage.setResizable(false);
         boolean debug = true;
         if (debug) {
             File testDir = new File(System.getProperty("user.home") + "/_mp_test/");
