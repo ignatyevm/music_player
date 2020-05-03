@@ -10,7 +10,7 @@ public class MainSceneController {
     }
 
     public void onTrackSelect(ObservableValue<? extends Track> obs, Track oldTrack, Track newTrack) {
-        mainScene.pauseButton.setText("pause");
+        mainScene.pauseButton.setGraphic(mainScene.pauseButtonGraphic);
         if (mainScene.player.isFirst()) mainScene.prevButton.setDisable(false);
         if (mainScene.player.isLast()) mainScene.nextButton.setDisable(false);
         mainScene.player.play(mainScene.trackTable.getSelectionModel().getSelectedIndex());
@@ -33,10 +33,10 @@ public class MainSceneController {
     public void onPause(ActionEvent event) {
         if (mainScene.player.isPaused()) {
             mainScene.player.play();
-            mainScene.pauseButton.setText("pause");
+            mainScene.pauseButton.setGraphic(mainScene.pauseButtonGraphic);
         } else {
             mainScene.player.pause();
-            mainScene.pauseButton.setText("continue");
+            mainScene.pauseButton.setGraphic(mainScene.playButtonGraphic);
         }
     }
 
