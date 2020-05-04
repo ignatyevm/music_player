@@ -1,16 +1,14 @@
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.Arrays;
@@ -21,8 +19,22 @@ public class InitialScene extends Scene {
     private InitialScene(Group root) {
         super(root, MusicPlayerMain.WINDOW_WIDTH, MusicPlayerMain.WINDOW_HEIGHT);
 
-        Button openFilesButton = new Button("Open file(-s)");
-        Button openFolderButton = new Button("Open folder");
+        getStylesheets().add("main.css");
+
+        JFXButton openFilesButton = new JFXButton("Open file(-s)");
+        JFXButton openFolderButton = new JFXButton("Open folder");
+
+        openFilesButton.getStyleClass().add("primary-button");
+        openFolderButton.getStyleClass().add("primary-button");
+
+        openFilesButton.setButtonType(JFXButton.ButtonType.RAISED);
+        openFolderButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        openFilesButton.setRipplerFill(Color.BLACK);
+        openFolderButton.setRipplerFill(Color.BLACK);
+
+        openFilesButton.setDisableVisualFocus(true);
+        openFolderButton.setDisableVisualFocus(true);
 
         openFilesButton.setOnAction(this::onOpenFiles);
         openFolderButton.setOnAction(this::onOpenFolder);
