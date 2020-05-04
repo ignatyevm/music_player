@@ -8,6 +8,11 @@
     -fx-background-color: transparent;
 }
 
+.primary-button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+}
+
 .rounded-button {
     -fx-background-radius: 36px;
     -fx-background-color: -fx-primary-color;
