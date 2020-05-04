@@ -49,7 +49,6 @@ public class Player {
 
     public void play(int trackIndex) {
         if (mediaPlayer != null) {
-            mainScene.trackSlider.valueProperty().removeListener(mainScene.trackSliderChangeListener);
             mediaPlayer.dispose();
         }
         Logger.logPlayTrack(currentTrackIndex, trackIndex, tracks.get(currentTrackIndex), tracks.get(trackIndex));
@@ -57,15 +56,11 @@ public class Player {
         Media media = tracks.get(trackIndex).media;
         mediaPlayer = new MediaPlayer(media);
 
-        mainScene.trackSlider.valueProperty().addListener(mainScene.trackSliderChangeListener);
-
         mediaPlayer.currentTimeProperty().addListener(obs -> {
             int currentTime = (int) getCurrentTime().toMillis();
             int totalTime = (int) getTotalDuration().toMillis();
             if (!mainScene.trackSliderDragged) {
-                mainScene.trackSlider.valueProperty().removeListener(mainScene.trackSliderChangeListener);
                 mainScene.trackSlider.setValue(currentTime * 100.0 / totalTime);
-                mainScene.trackSlider.valueProperty().addListener(mainScene.trackSliderChangeListener);
             }
             int mins = (int) (getCurrentTime().toSeconds() / 60);
             int secs = (int) (getCurrentTime().toSeconds() % 60);
@@ -74,10 +69,12 @@ public class Player {
         mediaPlayer.setOnReady(() -> {
             play();
             mediaPlayer.setOnEndOfMedia(() -> {
-                if (isLast()) {
-                    mainScene.controller.selectFirst();
-                } else {
-                    mainScene.controller.selectNext(null);
+                if (!mainScene.trackSliderDragged) {
+                    if (isLast()) {
+                        mainScene.controller.selectFirst();
+                    } else {
+                        mainScene.controller.selectNext(null);
+                    }
                 }
             });
         });

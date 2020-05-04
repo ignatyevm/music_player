@@ -36,7 +36,6 @@ public class MainScene extends Scene {
     public ImageView prevButtonGraphic;
     public ImageView nextButtonGraphic;
 
-    public InvalidationListener trackSliderChangeListener;
     public boolean trackSliderDragged = false;
 
     public MainScene(Group root, List<File> files) {
@@ -45,12 +44,6 @@ public class MainScene extends Scene {
         getStylesheets().add("main.css");
 
         controller = new MainSceneController(this);
-
-        trackSliderChangeListener = obs -> {
-            if (!trackSliderDragged) {
-                player.seek((long) (player.getTotalDuration().toMillis() * trackSlider.getValue() / 100.0));
-            }
-        };
 
         ObservableList<Track> tracks = files.stream().map(Track::new)
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -148,17 +141,15 @@ public class MainScene extends Scene {
         });
 
         trackSlider.setOnMousePressed(event -> {
-            trackSlider.valueProperty().removeListener(trackSliderChangeListener);
             trackSliderDragged = true;
         });
 
         trackSlider.setOnMouseReleased(event -> {
             int totalTime = (int) player.getTotalDuration().toMillis();
             player.seek((long) (totalTime * trackSlider.getValue() / 100.0));
-            trackSlider.valueProperty().addListener(trackSliderChangeListener);
             trackSliderDragged = false;
             try {
-                Thread.sleep(25);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -193,7 +184,6 @@ public class MainScene extends Scene {
         numberColumn.setMinWidth(25);
         numberColumn.setPrefWidth(25);
         numberColumn.setMaxWidth(200);
-        numberColumn.setStyle("-fx-alignment: center;");
 
         TableColumn<Track, String> nameColumn = new TableColumn<>("Track");
         nameColumn.setCellValueFactory(cellData ->
@@ -208,7 +198,6 @@ public class MainScene extends Scene {
         });
         durationColumn.setMinWidth(75);
         durationColumn.setMaxWidth(100);
-        durationColumn.setStyle("-fx-alignment: center;");
 
         trackTable.getColumns().addAll(numberColumn, nameColumn, durationColumn);
         trackTable.getSelectionModel().selectedItemProperty().addListener(controller::onTrackSelect);
