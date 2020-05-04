@@ -20,7 +20,7 @@ public class MusicPlayerMain extends Application {
         stage.setTitle("Music Player");
         stage.centerOnScreen();
         stage.setResizable(false);
-        boolean debug = true;
+        boolean debug = false;
         if (debug) {
             File testDir = new File(System.getProperty("user.home") + "/_mp_test/");
             File[] files = testDir.listFiles(file -> file.getName().endsWith(".wav"));
