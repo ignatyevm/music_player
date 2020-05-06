@@ -70,6 +70,12 @@ public class Player {
             play();
             mediaPlayer.setOnEndOfMedia(() -> {
                 if (!mainScene.trackSliderDragged) {
+                    if (isFirst() && isLast()) {
+                        mainScene.trackSlider.setValue(0);
+                        seek(0);
+                        play();
+                        return;
+                    }
                     if (isLast()) {
                         mainScene.controller.selectFirst();
                     } else {
