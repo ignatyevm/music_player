@@ -61,7 +61,7 @@ public class InitialScene extends Scene {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select file(-s)");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files", "*.wav", ".mp3"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files", "*.wav", "*.mp3"));
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(MusicPlayerMain.getStage());
         if (selectedFiles != null) {
             MainScene.show(selectedFiles);
