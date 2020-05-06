@@ -61,7 +61,7 @@ public class InitialScene extends Scene {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select file(-s)");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files", "*.wav"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files", "*.wav", ".mp3"));
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(MusicPlayerMain.getStage());
         if (selectedFiles != null) {
             MainScene.show(selectedFiles);
@@ -74,7 +74,8 @@ public class InitialScene extends Scene {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         File selectedFolder = directoryChooser.showDialog(MusicPlayerMain.getStage());
         if (selectedFolder != null) {
-            File[] filteredFiles = selectedFolder.listFiles(file -> file.getName().endsWith(".wav"));
+            File[] filteredFiles = selectedFolder.listFiles(
+                    file -> file.getName().endsWith(".wav") || file.getName().endsWith(".mp3"));
             if (filteredFiles != null) {
                 MainScene.show(Arrays.asList(filteredFiles));
             }
