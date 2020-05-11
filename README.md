@@ -1,4 +1,4 @@
-# music_player
+# Music Player
 
 Simple music player written on java, using javafx and jfoenix (for beautiful UI)
 
